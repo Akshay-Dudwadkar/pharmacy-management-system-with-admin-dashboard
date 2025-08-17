@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Jay Bhavani Medical - Allopathic, Ayurvedic, Cosmetic, Surgical products" />
+  <title>Jay Bhavani Medical</title>
+  <link rel="stylesheet" href="img.css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .menu-item {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      max-width: 200px;
+      text-align: center;
+      margin: 10px;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .menu-item img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #0077cc;
+      color: white;
+      padding: 10px 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 a {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+    }
+
+    .nav-links ul {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .right-buttons {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+    }
+
+    #user-icon {
+      background: #007bff;
+      color: white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #user-dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      min-width: 160px;
+      z-index: 1000;
+    }
+
+    #user-dropdown a,
+    #user-dropdown button {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 10px;
+      text-decoration: none;
+      padding: 8px;
+      border-radius: 4px;
+      background: #f4f4f4;
+      color: #333;
+      border: none;
+      cursor: pointer;
+    }
+
+    #user-dropdown a:hover,
+    #user-dropdown button:hover {
+      background: #e0e0e0;
+    }
+
+    #orders-container {
+      padding: 20px;
+    }
+
+    footer {
+      background: #f4f4f4;
+      padding: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container header-flex">
+      <h1><a href="index.html">Jay Bhavani Medical</a></h1>
+      <nav class="nav-links">
+        <ul>
+          <li><a href="product.html">Product</a></li>
+          <li><a href="order.html">Cart</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="feedback.html">Feedback</a></li>
+        </ul>
+      </nav>
+      <div class="right-buttons">
+        <div id="user-section">
+          <div id="user-icon">?</div>
+          <div id="user-dropdown"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <section id="home">
+      <h2>Welcome to Jay Bhavani Medical</h2>
+      <p>Allopathic | Ayurvedic | Cosmetic | Surgical products available.</p>
+    </section>
+
+    <section id="menu">
+      <h2>Our Products</h2>
+
+      <div>
+        <label for="categorySelect">Select Category:</label>
+        <select id="categorySelect">
+          <option value="all">All</option>
+          <option value="allopathic">Allopathic</option>
+          <option value="ayurvedic">Ayurvedic</option>
+          <option value="cosmetic">Cosmetic</option>
+          <option value="surgical">Surgical</option>
+        </select>
+      </div>
+
+      <div>
+        <input type="text" id="searchInput" placeholder="Search products..." />
+      </div>
+
+      <div class="menu-item" data-category="allopathic">
+        <img src="images/paracetamol.jpg" alt="Paracetamol tablet" class="paracetamol-image">
+        <p>Paracetamol - ₹25</p>
+        <button onclick="addToCart('Paracetamol', 25, 'images/paracetamol.jpg')">Add to Cart</button>
+      </div>
+
+      <div class="menu-item" data-category="ayurvedic">
+        <img src="images/ashwagandha.jpg" alt="Ashwagandha plant" class="ashwagandha-image">
+        <p>Ashwagandha - ₹120</p>
+        <button onclick="addToCart('Ashwagandha', 120, 'images/ashwagandha.jpg')">Add to Cart</button>
+      </div>
+
+    </section>
+
+    <div id="orders-container"></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Jay Bhavani Medical. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('/me');
+        const user = await res.json();
+        if (user && user.username) {
+          setupUserDropdown(user.username);
+        } else {
+          setupGuestDropdown();
+        }
+      } catch {
+        setupGuestDropdown();
+      }
+
+      document.addEventListener('click', function (e) {
+        const dropdown = document.getElementById('user-dropdown');
+        const icon = document.getElementById('user-icon');
+        if (!icon.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+    });
+
+    function setupUserDropdown(username) {
+      const icon = document.getElementById('user-icon');
+      const dropdown = document.getElementById('user-dropdown');
+      icon.textContent = username.charAt(0).toUpperCase();
+      icon.onclick = () => {
+        dropdown.innerHTML = `
+        <p style="margin: 0 0 10px;">👋 Hi, ${username}</p>
+       <button onclick="window.location.href='my-orders.html'">My Orders</button>
+
+        <button onclick="logout()">Logout</button>
+      `;
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+      };
+    }
+
+    function setupGuestDropdown() {
+      const icon = document.getElementById('user-icon');
+      const dropdown = document.getElementById('user-dropdown');
+      icon.textContent = '?';
+      icon.onclick = () => {
+        dropdown.innerHTML = `
+        <a href="login.html">Login</a>
+        <a href="signup.html">Signup</a>
+      `;
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+      };
+    }
+
+    async function logout() {
+      await fetch('/logout', { method: 'POST' });
+      location.reload();
+    }
+
+    async function viewOrders() {
+      const res = await fetch('/user/orders');
+      const orders = await res.json();
+      const container = document.getElementById('orders-container');
+      container.innerHTML = '<h3>Your Orders</h3>';
+
+      if (!orders.length) {
+        container.innerHTML += '<p>No orders found.</p>';
+        return;
+      }
+
+      orders.forEach(order => {
+        const div = document.createElement('div');
+        div.style.border = '1px solid #ccc';
+        div.style.marginBottom = '15px';
+        div.style.padding = '10px';
+        div.style.borderRadius = '6px';
+
+        // Order Header
+        div.innerHTML = `
+      <strong>Order Date:</strong> ${new Date(order.createdAt).toLocaleString()}<br>
+      <strong>Status:</strong> ${order.status || 'Pending'}<br>
+      <strong>Payment:</strong> ${order.paymentMethod}<br>
+      <strong>Total:</strong> ₹${order.totalCost}<br>
+      <strong>Items:</strong>
+      <ul style="padding-left: 18px; margin-top: 6px;">
+        ${order.cart.map(p => `
+          <li>
+            ${p.name} — ₹${p.price} × ${p.quantity} = ₹${(p.price * p.quantity).toFixed(2)}
+          </li>
+        `).join('')}
+      </ul>
+    `;
+
+        container.appendChild(div);
+      });
+    }
+
+    function addToCart(item, price, img) {
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const existing = cart.find(p => p.item === item);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ name: item, price, quantity: 1, img });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(`${item} added to cart!`);
+    }
+  </script>
+</body>
+
+</html>

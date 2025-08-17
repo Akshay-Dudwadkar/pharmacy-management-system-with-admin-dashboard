@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign up for a new account at Jay Bhavani Medical.">
+    <title>Sign Up - Jay Bhavani Medical</title>
+    <link rel="stylesheet" href="1style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="index.html">Jay Bhavani Medical</a></h1>
+        </div>
+    </header>
+
+    <section>
+        <div class="signup-container">
+            <h2>Create Your Account</h2>
+            <form id="signupForm" action="/signup" method="post">
+                <label for="username">Name:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your name" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+                
+                <button type="submit">Sign Up</button>
+            </form>
+            <div class="links">
+                <p>Already have an account? <a href="login.html">Login</a></p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Jay Bhavani Medical. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+       document.getElementById("signupForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const data = {
+        username: document.getElementById("username").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+    };
+    try {
+        const res = await fetch('/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        alert(result.message);
+        if (res.ok) window.location.href = 'login.html';
+    } catch {
+        alert("Signup failed");
+    }
+});
+
+    </script>
+
+</body>
+</html>

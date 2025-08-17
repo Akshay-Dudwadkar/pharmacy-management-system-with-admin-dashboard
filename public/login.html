@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to Jay Bhavani Medical to access your account.">
+  <title>Login - Jay Bhavani Medical</title>
+  <link rel="stylesheet" href="1style.css">
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="index.html">Jay Bhavani Medical</a></h1>
+    </div>
+  </header>
+
+  <section>
+    <div class="login-container">
+      <h2>Login to Your Account</h2>
+      <form action="/login" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your Username"required>
+
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+        <button type="submit">Login</button>
+        <div class="error-message" id="error-message"></div>
+      </form>
+      <div class="links">
+        <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+        <!-- <p>Forgot your password? <a href="#">Reset Password</a></p> -->
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Jay Bhavani Medical. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent the form from actually submitting
+
+      var email = document.getElementById('email').value;
+      var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      var errorMessage = document.getElementById('error-message');
+
+      if (!emailPattern.test(email)) {
+        errorMessage.textContent = 'Please enter a valid email address.';
+      } else {
+        errorMessage.textContent = ''; // Clear the error message if email is valid
+        window.location.href = 'index.html#products'; // Redirect to the products section on the index page
+      }
+    });
+  </script>
+
+  <script>
+  document.querySelector("form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    try {
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        if (username === "Akshay" && password === "akshay123") {
+          window.location.href = "admin.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      } else {
+        alert(result.message);
+      }
+    } catch (err) {
+      alert("Login failed");
+    }
+  });
+</script>
+
+
+</body>
+
+</html>

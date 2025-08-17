@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Jay Bhavani Medical</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .sidebar {
+      height: 100vh;
+      width: 220px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #0077cc;
+      padding-top: 20px;
+      color: white;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      background-color: #005fa3;
+    }
+
+    .main {
+      margin-left: 220px;
+      padding: 20px;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .visible {
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    input,
+    button,
+    select {
+      margin: 5px 0;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    img {
+      border-radius: 4px;
+    }
+
+    #preview img {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="sidebar">
+    <h2>Admin</h2>
+    <a href="#" onclick="showSection('products')">Product Management</a>
+    <a href="#" onclick="showSection('orders')">Order Management</a>
+    <a href="#" onclick="showSection('feedback')">Feedback Management</a>
+    <a href="#" onclick="showSection('users')">User Management</a>
+  </div>
+
+  <div class="main">
+    <!-- Product Management -->
+    <div id="products" class="section visible">
+      <h2>Product Management</h2>
+      <form id="addProductForm">
+        <input type="text" placeholder="Product Name" id="productName" required />
+        <input type="number" placeholder="Price" id="productPrice" required />
+
+        <label for="productCategory">Category:</label>
+        <select id="productCategory" required>
+          <option value="">Select Category</option>
+          <option value="Allopathic">Allopathic</option>
+          <option value="Ayurvedic">Ayurvedic</option>
+          <option value="Cosmetic">Cosmetic</option>
+          <option value="Surgical">Surgical</option>
+        </select>
+
+        <label for="productImage">Product Image:</label>
+        <input type="file" accept="image/*" id="productImage" name="productImage" required>
+        <div id="preview"></div>
+        <button type="submit">Add Product</button>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody"></tbody>
+      </table>
+    </div>
+
+    <!--  Order Management -->
+
+    <div id="orders" class="section">
+      <h2>Order Management</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Change Status</th>
+            <th>Date</th>
+            <th>Address</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="orderTableBody"></tbody>
+      </table>
+    </div>
+
+
+
+
+
+
+
+    <div id="feedback" class="section">
+      <h2>Feedback Management</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Rating</th>
+            <th>Feedback</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="feedbackTableBody"></tbody>
+      </table>
+    </div>
+
+    <div id="users" class="section">
+      <h2>User Management</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Signup Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Product Management -->
+  <script>
+    function showSection(id) {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(sec => sec.classList.remove('visible'));
+      document.getElementById(id).classList.add('visible');
+    }
+
+    const productImageInput = document.getElementById("productImage");
+    const preview = document.getElementById("preview");
+    const addProductForm = document.getElementById("addProductForm");
+    const productTableBody = document.getElementById("productTableBody");
+    const submitBtn = addProductForm.querySelector('button[type="submit"]');
+
+    productImageInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.innerHTML = `<img src="${e.target.result}" width="100"/>`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    async function loadProducts() {
+      try {
+        const res = await fetch('/api/products');
+        const products = await res.json();
+        productTableBody.innerHTML = '';
+        products.forEach(p => {
+          const row = document.createElement("tr");
+          row.setAttribute("data-name", p.name);
+          row.innerHTML = `
+          <td><img src="${p.img}" width="50"/></td>
+          <td>${p.name}</td>
+          <td>₹${p.price}</td>
+          <td>${p.category}</td>
+          <td>
+            <button onclick="editProduct(this)">Edit</button>
+            <button onclick="deleteProduct(this)">Delete</button>
+          </td>
+        `;
+          productTableBody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Error loading products", err);
+      }
+    }
+
+    window.onload = loadProducts;
+
+    addProductForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("productName").value;
+      const price = document.getElementById("productPrice").value;
+      const category = document.getElementById("productCategory").value;
+      const file = productImageInput.files[0];
+      const oldName = submitBtn.dataset.editing;
+
+      const handleSubmit = async (imageBase64 = null) => {
+        const payload = { name, price, category };
+        if (imageBase64) payload.imageBase64 = imageBase64;
+        if (oldName) payload.oldName = oldName;
+
+        const url = oldName ? '/admin/update-product' : '/admin/add-product';
+
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (!res.ok) return alert(result.message || 'Operation failed');
+
+        alert(oldName ? 'Product updated!' : 'Product added!');
+        addProductForm.reset();
+        preview.innerHTML = '';
+        submitBtn.textContent = "Add Product";
+        delete submitBtn.dataset.editing;
+        loadProducts();
+      };
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => handleSubmit(e.target.result);
+        reader.readAsDataURL(file);
+      } else {
+        handleSubmit();
+      }
+    });
+
+    function editProduct(button) {
+      const row = button.closest("tr");
+      const name = row.children[1].textContent;
+      const price = row.children[2].textContent.replace('₹', '');
+      const category = row.children[3].textContent;
+
+      document.getElementById("productName").value = name;
+      document.getElementById("productPrice").value = price;
+      document.getElementById("productCategory").value = category;
+
+      submitBtn.textContent = "Update Product";
+      submitBtn.dataset.editing = name;
+      window.scrollTo(0, 0);
+    }
+
+    async function deleteProduct(button) {
+      const row = button.closest("tr");
+      const name = row.getAttribute("data-name");
+      if (!confirm(`Delete product "${name}"?`)) return;
+
+      try {
+        const res = await fetch('/admin/delete-product', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name })
+        });
+        const result = await res.json();
+        if (res.ok) {
+          row.remove();
+          alert("Product deleted");
+        } else {
+          alert(result.message || "Failed to delete product");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Server error");
+      }
+    }
+
+    //  Order Management 
+
+    async function loadOrders() {
+      const res = await fetch('/admin/orders');
+      const orders = await res.json();
+      const table = document.getElementById("orderTableBody");
+      table.innerHTML = '';
+
+      orders.forEach(order => {
+        const items = order.cart.map(i =>
+          `${i.name} × ${i.quantity}<br>`
+        ).join('');
+
+        //  Display username or 'Guest'
+        const username = order.userId?.username || 'Guest';
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+  <td>${username}</td>
+  <td>${items}</td>
+  <td>₹${order.totalCost}</td>
+  <td>${order.paymentMethod}</td>
+  <td>${order.status || 'Pending'}</td>
+  <td>
+    <select onchange="updateOrderStatus('${order._id}', this.value)">
+      <option value="">Change</option>
+      <option value="Pending">Pending</option>
+      <option value="Processing">Processing</option>
+      <option value="Shipped">Shipped</option>
+      <option value="Delivered">Delivered</option>
+      <option value="Canceled">Canceled</option>
+    </select>
+  </td>
+  <td>${new Date(order.createdAt).toLocaleString()}</td>
+  <td>${order.address || 'No address provided'}</td>
+  <td><button onclick="deleteOrder('${order._id}')">Delete</button></td>
+`;
+
+        table.appendChild(row);
+      });
+    }
+
+    async function updateOrderStatus(orderId, status) {
+      if (!status) return;
+      const res = await fetch('/admin/update-order-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, status })
+      });
+
+      const result = await res.json();
+      alert(result.message || 'Updated');
+      loadOrders();
+    }
+
+    // Load orders when admin page loads
+    window.onload = () => {
+      loadProducts();
+      loadOrders();
+    };
+
+    async function deleteOrder(orderId) {
+      if (!confirm("Are you sure you want to delete this order?")) return;
+
+      const res = await fetch('/admin/delete-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId })
+      });
+
+      const result = await res.json();
+      alert(result.message || 'Order deleted');
+      loadOrders();
+    }
+
+
+    async function loadFeedbacks() {
+      const res = await fetch('/admin/feedbacks');
+      const feedbacks = await res.json();
+      const table = document.getElementById("feedbackTableBody");
+      table.innerHTML = '';
+
+      feedbacks.forEach(fb => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+      <td>${fb.name}</td>
+      <td>${fb.email}</td>
+      <td>${fb.rating} ★</td>
+      <td>${fb.feedback}</td>
+      <td><button onclick="deleteFeedback('${fb._id}')">Delete</button></td>
+    `;
+        table.appendChild(row);
+      });
+    }
+
+    async function deleteFeedback(feedbackId) {
+      if (!confirm("Are you sure you want to delete this feedback?")) return;
+
+      const res = await fetch('/admin/delete-feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ feedbackId })
+      });
+
+      const result = await res.json();
+      alert(result.message || 'Feedback deleted');
+      loadFeedbacks();
+    }
+
+    // ✅ Load feedbacks when admin page loads
+    window.onload = () => {
+      loadProducts();
+      loadOrders();
+      loadFeedbacks();
+    };
+
+    // ✅ Load all users
+    async function loadUsers() {
+      const res = await fetch('/admin/users');
+      const users = await res.json();
+      const table = document.getElementById("userTableBody");
+      table.innerHTML = '';
+
+      users.forEach(user => {
+        const status = user.banned ? 'Banned' : 'Active';
+        const row = document.createElement('tr');
+        row.innerHTML = `
+      <td>${user.username}</td>
+      <td>${user.email}</td>
+      <td>${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</td>
+      <td>${status}</td>
+      <td>
+        <button onclick="toggleBan('${user._id}', ${!user.banned})">${user.banned ? 'Unban' : 'Ban'}</button>
+        <button onclick="deleteUser('${user._id}')">Delete</button>
+      </td>
+    `;
+        table.appendChild(row);
+      });
+    }
+
+    // ✅ Ban/Unban a user
+    async function toggleBan(userId, banned) {
+      if (!confirm(`Are you sure you want to ${banned ? 'ban' : 'unban'} this user?`)) return;
+
+      const res = await fetch('/admin/toggle-ban', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, banned })
+      });
+      const result = await res.json();
+      alert(result.message);
+      loadUsers();
+    }
+
+    // ✅ Delete a user
+    async function deleteUser(userId) {
+      if (!confirm("Are you sure you want to delete this user?")) return;
+
+      const res = await fetch('/admin/delete-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId })
+      });
+      const result = await res.json();
+      alert(result.message);
+      loadUsers();
+    }
+
+    // ✅ Load users when admin page loads
+    window.onload = () => {
+      loadProducts();
+      loadOrders();
+      loadFeedbacks();
+      loadUsers();
+    };
+
+  </script>
