@@ -176,58 +176,7 @@
   </footer>
 
   <script>
-    let products = [
-      // Allopathic (10
-      { name: 'Paracetamol', desc: 'Fever and pain relief', price: 25, category: 'Allopathic', img: 'images/paracetamol.jpg' },
-      { name: 'Amoxicillin', desc: 'Antibiotic capsules', price: 50, category: 'Allopathic', img: 'images/amoxicillin.jpg' },
-      { name: 'Ibuprofen', desc: 'Anti-inflammatory', price: 40, category: 'Allopathic', img: 'images/ibuprofen.jpg' },
-      { name: 'Cetirizine', desc: 'Allergy relief', price: 20, category: 'Allopathic', img: 'images/cetirizine.jpg' },
-      { name: 'Dolo 650', desc: 'Pain & fever relief', price: 30, category: 'Allopathic', img: 'images/dolo650.jpg' },
-      { name: 'Aspirin', desc: 'Blood thinner', price: 35, category: 'Allopathic', img: 'images/aspirin.jpg' },
-      { name: 'Azithromycin', desc: 'Antibiotic', price: 60, category: 'Allopathic', img: 'images/azithromycin.jpg' },
-      { name: 'ORS Sachet', desc: 'Hydration support', price: 10, category: 'Allopathic', img: 'images/ors.jpg' },
-      { name: 'Vitamin C', desc: 'Immunity booster', price: 45, category: 'Allopathic', img: 'images/vitamin_c.jpg' },
-      { name: 'Metformin', desc: 'Diabetes care', price: 70, category: 'Allopathic', img: 'images/metformin.jpg' },
-
-      // Ayurvedic (10)
-      { name: 'Ashwagandha', desc: 'Stress relief', price: 120, category: 'Ayurvedic', img: 'images/ashwagandha.jpg' },
-      { name: 'Chyawanprash', desc: 'Immunity booster', price: 150, category: 'Ayurvedic', img: 'images/chyawanprash.jpg' },
-      { name: 'Triphala', desc: 'Digestive tonic', price: 90, category: 'Ayurvedic', img: 'images/triphala.jpg' },
-      { name: 'Shilajit', desc: 'Energy & vitality', price: 220, category: 'Ayurvedic', img: 'images/shilajit.jpg' },
-      { name: 'Neem Capsules', desc: 'Skin care', price: 100, category: 'Ayurvedic', img: 'images/neem.jpg' },
-      { name: 'Giloy Juice', desc: 'Detoxifier', price: 130, category: 'Ayurvedic', img: 'images/giloy.jpg' },
-      { name: 'Brahmi Syrup', desc: 'Brain tonic', price: 80, category: 'Ayurvedic', img: 'images/brahmi.jpg' },
-      { name: 'Tulsi Drops', desc: 'Respiratory support', price: 65, category: 'Ayurvedic', img: 'images/Tulsi Drops.jpg' },
-      { name: 'Amla Juice', desc: 'Rich in Vitamin C', price: 110, category: 'Ayurvedic', img: 'images/amla.jpg' },
-      { name: 'Mulethi Powder', desc: 'Cough remedy', price: 75, category: 'Ayurvedic', img: 'images/mulethi.jpg' },
-
-      // Cosmetic (10)
-      { name: 'Face Wash', desc: 'Skin cleanser', price: 80, category: ' Cosmetic', img: 'images/face_wash.jpg' },
-      { name: 'Moisturizer', desc: 'Hydration cream', price: 95, category: ' Cosmetic', img: 'images/moisturizer.jpg' },
-      { name: 'Sunscreen', desc: 'SPF 50 protection', price: 120, category: ' Cosmetic', img: 'images/sunscreen.jpg' },
-      { name: 'Lip Balm', desc: 'Lip moisture', price: 45, category: ' Cosmetic', img: 'images/lip_balm.jpg' },
-      { name: 'Shampoo', desc: 'Hair cleanser', price: 110, category: ' Cosmetic', img: 'images/shampoo.jpg' },
-      { name: 'Hair Oil', desc: 'Nourishment oil', price: 90, category: ' Cosmetic', img: 'images/hair_oil.jpg' },
-      { name: 'Aloe Vera Gel', desc: 'Soothing gel', price: 85, category: ' Cosmetic', img: 'images/aloe_vera.jpg' },
-      { name: 'Conditioner', desc: 'Hair softening', price: 105, category: ' Cosmetic', img: 'images/conditioner.jpg' },
-      { name: 'Charcoal Mask', desc: 'Deep clean mask', price: 95, category: ' Cosmetic', img: 'images/Charcoal Mask.jpg' },
-      { name: 'Fairness Cream', desc: 'Brightening cream', price: 70, category: ' Cosmetic', img: 'images/fairness_cream.jpg' },
-
-      // Surgical (10)
-      { name: 'Bandage Roll', desc: 'Cotton bandage', price: 30, category: 'Surgical', img: 'images/bandage.jpg' },
-      { name: 'Surgical Mask', desc: '3-layer mask', price: 10, category: 'Surgical', img: 'images/mask.jpg' },
-      { name: 'Hand Gloves', desc: 'Latex gloves', price: 25, category: 'Surgical', img: 'images/gloves.jpg' },
-      { name: 'Thermometer', desc: 'Digital', price: 250, category: 'Surgical', img: 'images/thermometer.jpg' },
-      { name: 'First Aid Box', desc: 'Emergency kit', price: 300, category: 'Surgical', img: 'images/Firstaid.jpg' },
-      { name: 'Hand Sanitizer', desc: '70% alcohol', price: 60, category: 'Surgical', img: 'images/sanitizer.jpg' },
-      { name: 'Oximeter', desc: 'Pulse monitor', price: 550, category: 'Surgical', img: 'images/oximeter.jpg' },
-      { name: 'Surgical Scissors', desc: 'Steel scissors', price: 85, category: 'Surgical', img: 'images/scissors.jpg' },
-      { name: 'Syringes', desc: '5ml disposable', price: 5, category: 'Surgical', img: 'images/syringe.jpg' },
-      { name: 'Gauze Pads', desc: 'Wound dressing', price: 20, category: 'Surgical', img: 'images/gauze.jpg' },
-    ];
-
-
-
+    
     async function fetchProducts() {
   try {
     const res = await fetch('/api/products');
