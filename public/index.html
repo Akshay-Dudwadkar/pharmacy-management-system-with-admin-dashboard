@@ -2,90 +2,109 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Jay Bhavani Medical - Allopathic, Ayurvedic, Cosmetic, Surgical products" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Jay Bhavani Medical - Professional Medical Store Homepage">
   <title>Jay Bhavani Medical</title>
-  <link rel="stylesheet" href="img.css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    .menu-item {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 10px;
-      max-width: 200px;
-      text-align: center;
-      margin: 10px;
-      display: inline-block;
-      vertical-align: top;
-    }
-
-    .menu-item img {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 6px;
-      margin-bottom: 8px;
-    }
-
-
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
       margin: 0;
-      padding: 0;
+      background: #f5f7fa;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background: #1e1e2f;
+      color: #f1f1f1;
     }
 
     header {
-      background: #0077cc;
-      color: white;
-      padding: 10px 20px;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .header-flex {
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    header h1 a {
-      font-size: 24px;
-      font-weight: bold;
+      padding: 15px 30px;
+      background: #0077cc;
       color: white;
-      text-decoration: none;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    .nav-links ul {
-      display: flex;
-      gap: 20px;
-      list-style: none;
-      padding: 0;
+    header h1 {
+      font-size: 24px;
       margin: 0;
     }
 
-    .nav-links a {
-      color: white;
-      text-decoration: none;
+    nav ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      gap: 25px;
     }
 
-    .right-buttons {
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ffe600;
+    }
+
+    .header-actions {
       display: flex;
       align-items: center;
       gap: 20px;
       position: relative;
     }
 
+    #cart-icon {
+      position: relative;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #cart-count {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: red;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 50%;
+      padding: 2px 6px;
+    }
+
+    #darkModeToggle {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: white;
+      color: #0077cc;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    body.dark #darkModeToggle {
+      background: #444;
+      color: #f1f1f1;
+    }
+
     #user-icon {
-      background: #007bff;
+      background: #005fa3;
       color: white;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -96,138 +115,386 @@
     #user-dropdown {
       display: none;
       position: absolute;
-      top: 50px;
+      top: 45px;
       right: 0;
       background: white;
+      color: #333;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       min-width: 160px;
       z-index: 1000;
     }
 
-    #user-dropdown a,
-    #user-dropdown button {
+    body.dark #user-dropdown {
+      background: #2b2b3c;
+      color: #f1f1f1;
+      border: 1px solid #555;
+    }
+
+    #user-dropdown a, #user-dropdown button {
       display: block;
       width: 100%;
       text-align: center;
-      margin-bottom: 10px;
-      text-decoration: none;
+      margin-bottom: 8px;
       padding: 8px;
-      border-radius: 4px;
+      border-radius: 6px;
       background: #f4f4f4;
       color: #333;
       border: none;
       cursor: pointer;
     }
 
-    #user-dropdown a:hover,
-    #user-dropdown button:hover {
+    body.dark #user-dropdown a, body.dark #user-dropdown button {
+      background: #444;
+      color: #f1f1f1;
+    }
+
+    #user-dropdown a:hover, #user-dropdown button:hover {
       background: #e0e0e0;
     }
 
-    #orders-container {
+    body.dark #user-dropdown a:hover, body.dark #user-dropdown button:hover {
+      background: #555;
+    }
+
+    .hero {
+      margin: 30px auto;
+      padding: 50px 30px;
+      text-align: center;
+      background: linear-gradient(135deg, #0077cc, #00aaff);
+      color: white;
+      border-radius: 15px;
+      max-width: 1100px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    body.dark .hero {
+      background: linear-gradient(135deg, #2b2b3c, #1e1e2f);
+      color: #f1f1f1;
+    }
+
+    .hero h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .hero a {
+      padding: 12px 25px;
+      background: #ffe600;
+      color: #0077cc;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .hero a:hover {
+      background: #ffd000;
+    }
+
+    .categories {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin: 50px auto;
+      max-width: 1100px;
+      gap: 20px;
+    }
+
+    .category-card {
+      flex: 1 1 200px;
+      background: white;
+      border-radius: 12px;
+      text-align: center;
       padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    body.dark .category-card {
+      background: #2b2b3c;
+      color: #f1f1f1;
+    }
+
+    .category-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .category-card img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .testimonials {
+      max-width: 1100px;
+      margin: 50px auto;
+      text-align: center;
+    }
+
+    .testimonial-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      margin: 15px;
+      display: inline-block;
+      max-width: 300px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    body.dark .testimonial-card {
+      background: #2b2b3c;
+      color: #f1f1f1;
+    }
+
+    .newsletter {
+      max-width: 700px;
+      margin: 50px auto;
+      text-align: center;
+      padding: 30px;
+      background: #0077cc;
+      color: white;
+      border-radius: 12px;
+    }
+
+    .newsletter input {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      width: 60%;
+      margin-right: 10px;
+    }
+
+    .newsletter button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      background: #ffe600;
+      color: #0077cc;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     footer {
-      background: #f4f4f4;
-      padding: 20px;
       text-align: center;
+      margin-top: 50px;
+      padding: 25px;
+      font-size: 14px;
+      color: #666;
+      background: #f1f1f1;
     }
+
+    body.dark footer {
+      background: #1e1e2f;
+      color: #aaa;
+    }
+    /* Responsive Design */
+@media (max-width: 992px) {
+  nav ul {
+    gap: 15px;
+  }
+  .hero h2 {
+    font-size: 26px;
+  }
+  .hero p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-wrap: wrap;
+    padding: 10px 15px;
+  }
+
+  nav {
+    display: none;
+    width: 100%;
+    background: #0077cc;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 0;
+  }
+
+  .hamburger {
+    display: block;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .hero {
+    padding: 30px 15px;
+  }
+
+  .hero h2 {
+    font-size: 22px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .categories {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .category-card {
+    width: 90%;
+  }
+
+  .testimonial-card {
+    display: block;
+    width: 90%;
+    margin: 15px auto;
+  }
+
+  .newsletter input {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .newsletter button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 18px;
+  }
+
+  .hero h2 {
+    font-size: 20px;
+  }
+
+  .hero p {
+    font-size: 13px;
+  }
+
+  .category-card img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
   </style>
 </head>
 
 <body>
-
   <header>
-    <div class="container header-flex">
-      <h1><a href="index.html">Jay Bhavani Medical</a></h1>
-      <nav class="nav-links">
-        <ul>
-          <li><a href="product.html">Product</a></li>
-          <li><a href="order.html">Cart</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="feedback.html">Feedback</a></li>
-        </ul>
-      </nav>
-      <div class="right-buttons">
-        <div id="user-section">
-          <div id="user-icon">?</div>
-          <div id="user-dropdown"></div>
-        </div>
+    <h1>Jay Bhavani Medical</h1>
+    <div class="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="product.html">Products</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="feedback.html">Feedback</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <div id="cart-icon">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-count">0</span>
       </div>
+      <button id="darkModeToggle">🌙 Dark Mode</button>
+      <div id="user-icon">?</div>
+      <div id="user-dropdown"></div>
     </div>
   </header>
 
-  <div class="container">
-    <section id="home">
-      <h2>Welcome to Jay Bhavani Medical</h2>
-      <p>Allopathic | Ayurvedic | Cosmetic | Surgical products available.</p>
-    </section>
+  <section class="hero">
+    <h2>Welcome to Jay Bhavani Medical</h2>
+    <p>Your trusted destination for Allopathic, Ayurvedic, Cosmetic, and Surgical products.</p>
+    <a href="product.html">Shop Now</a>
+  </section>
 
-    <section id="menu">
-      <h2>Our Products</h2>
+  <section class="categories">
+    <a href="product.html?category=allopathic" class="category-card">
+      <img src="images/paracetamol.jpg" alt="Allopathic">
+      <h3>Allopathic</h3>
+    </a>
+    <a href="product.html?category=ayurvedic" class="category-card">
+      <img src="images/ashwagandha.jpg" alt="Ayurvedic">
+      <h3>Ayurvedic</h3>
+    </a>
+    <a href="product.html?category=cosmetic" class="category-card">
+      <img src="images/face_wash.jpg" alt="Cosmetic">
+      <h3>Cosmetic</h3>
+    </a>
+    <a href="product.html?category=surgical" class="category-card">
+      <img src="images/syringe.jpg" alt="Surgical">
+      <h3>Surgical</h3>
+    </a>
+  </section>
 
-      <div>
-        <label for="categorySelect">Select Category:</label>
-        <select id="categorySelect">
-          
-          <option value="all">All</option>
-          <option value="allopathic">Allopathic</option>
-          <option value="ayurvedic">Ayurvedic</option>
-          <option value="cosmetic">Cosmetic</option>
-          <option value="surgical">Surgical</option>
-        </select>
-      </div>
+  <section class="testimonials">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonial-card">
+      <p>"Excellent products and fast delivery! Highly recommend."</p>
+      <strong>- Ramesh K.</strong>
+    </div>
+    <div class="testimonial-card">
+      <p>"Very reliable and great customer support. My go-to medical store."</p>
+      <strong>- Priya S.</strong>
+    </div>
+  </section>
 
-      <div>
-        <input type="text" id="searchInput" placeholder="Search products..." />
-      </div>
-
-      <div class="menu-item" data-category="allopathic">
-        <img src="images/paracetamol.jpg" alt="Paracetamol tablet" class="paracetamol-image">
-        <p>Paracetamol - ₹25</p>
-        <button onclick="addToCart('Paracetamol', 25, 'images/paracetamol.jpg')">Add to Cart</button>
-      </div>
-
-      <div class="menu-item" data-category="ayurvedic">
-        <img src="images/ashwagandha.jpg" alt="Ashwagandha plant" class="ashwagandha-image">
-        <p>Ashwagandha - ₹120</p>
-        <button onclick="addToCart('Ashwagandha', 120, 'images/ashwagandha.jpg')">Add to Cart</button>
-      </div>
-
-    </section>
-
-    <div id="orders-container"></div>
-  </div>
+  <section class="newsletter">
+    <h2>Subscribe to Our Newsletter</h2>
+    <p>Get latest updates and offers directly in your inbox.</p>
+    <input type="email" placeholder="Enter your email">
+    <button>Subscribe</button>
+  </section>
 
   <footer>
-    <p>&copy; 2024 Jay Bhavani Medical. All rights reserved.</p>
+    &copy; 2024 Jay Bhavani Medical. All rights reserved.
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
+    document.addEventListener('DOMContentLoaded', () => {
+      // User dropdown setup
       try {
-        const res = await fetch('/me');
-        const user = await res.json();
-        if (user && user.username) {
-          setupUserDropdown(user.username);
-        } else {
-          setupGuestDropdown();
-        }
-      } catch {
-        setupGuestDropdown();
-      }
+        fetch('/me').then(res => res.json()).then(user => {
+          if (user && user.username) setupUserDropdown(user.username);
+          else setupGuestDropdown();
+        });
+      } catch { setupGuestDropdown(); }
 
-      document.addEventListener('click', function (e) {
+      document.addEventListener('click', e => {
         const dropdown = document.getElementById('user-dropdown');
-        const icon = document.getElementById('user-icon');
-        if (!icon.contains(e.target) && !dropdown.contains(e.target)) {
+        if (!document.getElementById('user-icon').contains(e.target) && !dropdown.contains(e.target)) {
           dropdown.style.display = 'none';
         }
       });
+
+      // Dark mode toggle
+      const toggleBtn = document.getElementById('darkModeToggle');
+      if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+      toggleBtn.onclick = () => {
+        document.body.classList.toggle('dark');
+        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+      };
+
+      // Cart count
+      updateCartCount();
     });
 
     function setupUserDropdown(username) {
@@ -236,11 +503,10 @@
       icon.textContent = username.charAt(0).toUpperCase();
       icon.onclick = () => {
         dropdown.innerHTML = `
-        <p style="margin: 0 0 10px;">👋 Hi, ${username}</p>
-       <button onclick="window.location.href='my-orders.html'">My Orders</button>
-
-        <button onclick="logout()">Logout</button>
-      `;
+          <p style='margin:0 0 10px;'>👋 Hi, ${username}</p>
+          <button onclick="window.location.href='my-orders.html'">My Orders</button>
+          <button onclick="logout()">Logout</button>
+        `;
         dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
       };
     }
@@ -251,9 +517,9 @@
       icon.textContent = '?';
       icon.onclick = () => {
         dropdown.innerHTML = `
-        <a href="login.html">Login</a>
-        <a href="signup.html">Signup</a>
-      `;
+          <a href='login.html'>Login</a>
+          <a href='signup.html'>Signup</a>
+        `;
         dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
       };
     }
@@ -263,55 +529,15 @@
       location.reload();
     }
 
-    async function viewOrders() {
-      const res = await fetch('/user/orders');
-      const orders = await res.json();
-      const container = document.getElementById('orders-container');
-      container.innerHTML = '<h3>Your Orders</h3>';
-
-      if (!orders.length) {
-        container.innerHTML += '<p>No orders found.</p>';
-        return;
-      }
-
-      orders.forEach(order => {
-        const div = document.createElement('div');
-        div.style.border = '1px solid #ccc';
-        div.style.marginBottom = '15px';
-        div.style.padding = '10px';
-        div.style.borderRadius = '6px';
-
-        // Order Header
-        div.innerHTML = `
-      <strong>Order Date:</strong> ${new Date(order.createdAt).toLocaleString()}<br>
-      <strong>Status:</strong> ${order.status || 'Pending'}<br>
-      <strong>Payment:</strong> ${order.paymentMethod}<br>
-      <strong>Total:</strong> ₹${order.totalCost}<br>
-      <strong>Items:</strong>
-      <ul style="padding-left: 18px; margin-top: 6px;">
-        ${order.cart.map(p => `
-          <li>
-            ${p.name} — ₹${p.price} × ${p.quantity} = ₹${(p.price * p.quantity).toFixed(2)}
-          </li>
-        `).join('')}
-      </ul>
-    `;
-
-        container.appendChild(div);
-      });
-    }
-
-    function addToCart(item, price, img) {
+    function updateCartCount() {
       let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      const existing = cart.find(p => p.item === item);
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        cart.push({ name: item, price, quantity: 1, img });
-      }
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert(`${item} added to cart!`);
+      document.getElementById('cart-count').textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
     }
+    document.querySelector('.hamburger').addEventListener('click', () => {
+      const nav = document.querySelector('nav');
+      if (nav.style.display === 'block') nav.style.display = 'none';
+      else nav.style.display = 'block';
+    });
   </script>
 </body>
 

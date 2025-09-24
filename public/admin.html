@@ -5,10 +5,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard - Jay Bhavani Medical</title>
+  <link href="https://cdn.jsdelivr.net/npm/chart.js" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
     }
 
     .sidebar {
@@ -17,30 +21,119 @@
       position: fixed;
       top: 0;
       left: 0;
-      background-color: #0077cc;
+      background-color: #1565c0;
       padding-top: 20px;
       color: white;
+      display: flex;
+      flex-direction: column;
     }
 
     .sidebar h2 {
       text-align: center;
       margin-bottom: 20px;
+      font-size: 1.5rem;
     }
 
     .sidebar a {
-      display: block;
+      display: flex;
+      align-items: center;
       color: white;
-      padding: 10px 20px;
+      padding: 12px 20px;
       text-decoration: none;
+      transition: background 0.3s;
     }
 
     .sidebar a:hover {
-      background-color: #005fa3;
+      background-color: #0d47a1;
+    }
+
+    .sidebar a i {
+      margin-right: 10px;
     }
 
     .main {
       margin-left: 220px;
       padding: 20px;
+    }
+
+    .dashboard-cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      flex: 1 1 200px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #1565c0;
+    }
+
+    .card p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #1565c0;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #1976d2;
+      color: white;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #0d47a1;
+    }
+
+    input,
+    select {
+      padding: 6px 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
 
     .section {
@@ -51,33 +144,125 @@
       display: block;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
+    h2 {
+      margin-bottom: 20px;
     }
 
-    th,
-    td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: left;
+    /* Dashboard Charts */
+    .chart-container {
+      margin: 30px 0;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
-    input,
-    button,
-    select {
-      margin: 5px 0;
-      padding: 8px;
-      font-size: 14px;
+    /* Dark Mode */
+    .dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
     }
 
-    img {
-      border-radius: 4px;
+    .dark-mode .sidebar {
+      background-color: #1e1e1e;
     }
 
-    #preview img {
-      margin-top: 10px;
+    .dark-mode table {
+      background-color: #1e1e1e;
+      color: #e0e0e0;
+    }
+
+    .dark-mode th {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .dark-mode .card {
+      background-color: #1f1f1f;
+      color: #e0e0e0;
+      box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        overflow-x: auto;
+      }
+
+      .sidebar h2 {
+        font-size: 1.2rem;
+        margin: 10px;
+      }
+
+      .sidebar a {
+        flex: 1;
+        justify-content: center;
+        font-size: 0.9rem;
+        padding: 10px;
+      }
+
+      .main {
+        margin-left: 0;
+        margin-top: 10px;
+        padding: 10px;
+      }
+
+      .dashboard-cards {
+        flex-direction: column;
+      }
+
+      .card {
+        width: 100%;
+      }
+
+      .chart-container {
+        padding: 10px;
+      }
+
+      table {
+        font-size: 0.85rem;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      th,
+      td {
+        padding: 8px;
+      }
+
+      button {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .sidebar a {
+        justify-content: flex-start;
+        padding: 8px 12px;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .card h3 {
+        font-size: 1rem;
+      }
+
+      .card p {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
@@ -86,21 +271,56 @@
 
   <div class="sidebar">
     <h2>Admin</h2>
-    <a href="#" onclick="showSection('products')">Product Management</a>
-    <a href="#" onclick="showSection('orders')">Order Management</a>
-    <a href="#" onclick="showSection('feedback')">Feedback Management</a>
-    <a href="#" onclick="showSection('users')">User Management</a>
+    <a href="#" onclick="showSection('dashboard')"><i>🏠</i> Dashboard</a>
+    <a href="#" onclick="showSection('products')"><i>📦</i> Products</a>
+    <a href="#" onclick="showSection('orders')"><i>🛒</i> Orders</a>
+    <a href="#" onclick="showSection('feedback')"><i>💬</i> Feedback</a>
+    <a href="#" onclick="showSection('users')"><i>👥</i> Users</a>
   </div>
 
   <div class="main">
+
+    <!-- Dashboard Overview -->
+    <div id="dashboard" class="section visible">
+      <h2>Dashboard Overview</h2>
+      <div class="dashboard-cards">
+        <div class="card">
+          <h3>Total Products</h3>
+          <p id="totalProducts">0</p>
+        </div>
+        <div class="card">
+          <h3>Total Orders</h3>
+          <p id="totalOrders">0</p>
+        </div>
+        <div class="card">
+          <h3>Total Users</h3>
+          <p id="totalUsers">0</p>
+        </div>
+        <div class="card">
+          <h3>Average Rating</h3>
+          <p id="avgRating">0 ★</p>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="ordersChart" height="150"></canvas>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="ordersStatusChart" height="150"></canvas>
+      </div>
+      <div class="chart-container">
+        <canvas id="newUsersChart" height="150"></canvas>
+      </div>
+
+    </div>
+
     <!-- Product Management -->
-    <div id="products" class="section visible">
+    <div id="products" class="section">
       <h2>Product Management</h2>
       <form id="addProductForm">
         <input type="text" placeholder="Product Name" id="productName" required />
         <input type="number" placeholder="Price" id="productPrice" required />
-
-        <label for="productCategory">Category:</label>
         <select id="productCategory" required>
           <option value="">Select Category</option>
           <option value="Allopathic">Allopathic</option>
@@ -108,13 +328,10 @@
           <option value="Cosmetic">Cosmetic</option>
           <option value="Surgical">Surgical</option>
         </select>
-
-        <label for="productImage">Product Image:</label>
-        <input type="file" accept="image/*" id="productImage" name="productImage" required>
+        <input type="file" accept="image/*" id="productImage" required>
         <div id="preview"></div>
         <button type="submit">Add Product</button>
       </form>
-
       <table>
         <thead>
           <tr>
@@ -189,9 +406,150 @@
       </table>
     </div>
   </div>
+  </div>
 
-  <!-- Product Management -->
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+    // Toggle sections
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('visible'));
+      document.getElementById(id).classList.add('visible');
+    }
+
+    // Load Dashboard Stats
+    async function loadDashboardStats() {
+      try {
+        const [productsRes, ordersRes, usersRes, feedbackRes] = await Promise.all([
+          fetch('/api/products'),
+          fetch('/api/orders'),
+          fetch('/api/users'),
+          fetch('/api/feedbacks')
+        ]);
+        const [products, orders, users, feedbacks] = await Promise.all([
+          productsRes.json(), ordersRes.json(), usersRes.json(), feedbackRes.json()
+        ]);
+
+        document.getElementById('totalProducts').textContent = products.length;
+        document.getElementById('totalOrders').textContent = orders.length;
+        document.getElementById('totalUsers').textContent = users.length;
+
+        const avgRating = feedbacks.length
+          ? (feedbacks.reduce((s, f) => s + f.rating, 0) / feedbacks.length).toFixed(1)
+          : 0;
+        document.getElementById('avgRating').textContent = `${avgRating} ★`;
+      } catch (err) { console.error(err); }
+    }
+
+    // Orders by Month Chart
+    async function loadOrdersChart() {
+      const res = await fetch('/api/orders');
+      const orders = await res.json();
+      const monthly = Array(12).fill(0);
+      orders.forEach(o => monthly[new Date(o.createdAt).getMonth()]++);
+      new Chart(document.getElementById('ordersChart'), {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [{ label: 'Orders', data: monthly, borderColor: '#1565c0', backgroundColor: 'rgba(21,101,192,0.2)', fill: true, tension: 0.4 }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } } }
+      });
+    }
+
+    // Orders by Status Pie Chart
+    async function loadOrdersStatusChart() {
+      const res = await fetch('/api/orders');
+      const orders = await res.json();
+      const statusCount = { Pending: 0, Processing: 0, Shipped: 0, Delivered: 0, Cancelled: 0 };
+      orders.forEach(o => statusCount[o.status || 'Pending']++);
+      new Chart(document.getElementById('ordersStatusChart'), {
+        type: 'pie',
+        data: {
+          labels: Object.keys(statusCount),
+          datasets: [{
+            data: Object.values(statusCount),
+            backgroundColor: ['#1565c0', '#43a047', '#fbc02d', '#e53935', '#9e9e9e']
+          }]
+        }
+      });
+    }
+
+    // Users by Month Chart
+    async function loadUsersChart() {
+      const res = await fetch('/api/users');
+      const users = await res.json();
+      const monthly = Array(12).fill(0);
+      users.forEach(u => monthly[new Date(u.createdAt).getMonth()]++);
+      new Chart(document.getElementById('newUsersChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [{ label: 'New Users', data: monthly, backgroundColor: '#43a047' }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } } }
+      });
+    }
+
+    // Load Tables
+    async function loadProducts() {
+      const res = await fetch('/api/products'); const products = await res.json();
+      const tbody = document.getElementById('productTable'); tbody.innerHTML = '';
+      products.forEach(p => {
+        const row = `<tr><td>${p.name}</td><td>${p.price}</td>
+      <td><button onclick="deleteProduct('${p._id}')" class="delete">Delete</button></td></tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+    async function loadOrders() {
+      const res = await fetch('/api/orders'); const orders = await res.json();
+      const tbody = document.getElementById('orderTable'); tbody.innerHTML = '';
+      orders.forEach(o => {
+        const row = `<tr><td>${o._id}</td><td>${o.status}</td>
+      <td><button onclick="deleteOrder('${o._id}')" class="delete">Delete</button></td></tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+    async function loadUsers() {
+      const res = await fetch('/api/users'); const users = await res.json();
+      const tbody = document.getElementById('userTable'); tbody.innerHTML = '';
+      users.forEach(u => {
+        const row = `<tr><td>${u.name}</td><td>${u.email}</td>
+      <td><button onclick="deleteUser('${u._id}')" class="delete">Delete</button></td></tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+    async function loadFeedbacks() {
+      const res = await fetch('/api/feedbacks'); const feedbacks = await res.json();
+      const tbody = document.getElementById('feedbackTable'); tbody.innerHTML = '';
+      feedbacks.forEach(f => {
+        const row = `<tr><td>${f.user}</td><td>${f.comment}</td><td>${f.rating}</td>
+      <td><button onclick="deleteFeedback('${f._id}')" class="delete">Delete</button></td></tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    // Delete functions
+    async function deleteProduct(id) { await fetch('/admin/delete-product', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) }); loadProducts(); }
+    async function deleteOrder(id) { await fetch('/admin/delete-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) }); loadOrders(); }
+    async function deleteUser(id) { await fetch('/admin/delete-user', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) }); loadUsers(); }
+    async function deleteFeedback(id) { await fetch('/admin/delete-feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) }); loadFeedbacks(); }
+
+    // On Page Load
+    // window.onload = () => {
+    //   loadDashboardStats();
+    //   loadOrdersChart();
+    //   loadOrdersStatusChart();
+    //   loadUsersChart();
+    //   loadProducts();
+    //   loadOrders();
+    //   loadUsers();
+    //   loadFeedbacks();
+    // };
+
+    <!-- Product Management -->
+
     function showSection(id) {
       const sections = document.querySelectorAll('.section');
       sections.forEach(sec => sec.classList.remove('visible'));
@@ -240,7 +598,7 @@
       }
     }
 
-    window.onload = loadProducts;
+    // window.onload = loadProducts;
 
     addProductForm.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -378,10 +736,10 @@
     }
 
     // Load orders when admin page loads
-    window.onload = () => {
-      loadProducts();
-      loadOrders();
-    };
+    // window.onload = () => {
+    //   loadProducts();
+    //   loadOrders();
+    // };
 
     async function deleteOrder(orderId) {
       if (!confirm("Are you sure you want to delete this order?")) return;
@@ -432,11 +790,11 @@
     }
 
     // ✅ Load feedbacks when admin page loads
-    window.onload = () => {
-      loadProducts();
-      loadOrders();
-      loadFeedbacks();
-    };
+    // window.onload = () => {
+    //   loadProducts();
+    //   loadOrders();
+    //   loadFeedbacks();
+    // };
 
     // ✅ Load all users
     async function loadUsers() {
@@ -491,11 +849,23 @@
     }
 
     // ✅ Load users when admin page loads
-    window.onload = () => {
+    // On Page Load
+    window.addEventListener("load", () => {
+      // Dashboard stats + charts
+      loadDashboardStats();
+      loadOrdersChart();
+      loadOrdersStatusChart();
+      loadUsersChart();
+
+      // Tables
       loadProducts();
       loadOrders();
-      loadFeedbacks();
       loadUsers();
-    };
+      loadFeedbacks();
+    });
+
 
   </script>
+</body>
+
+</html>

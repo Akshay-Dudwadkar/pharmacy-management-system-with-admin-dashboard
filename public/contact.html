@@ -1,245 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Get in touch with Jay Bhavani Medical."/>
-  <title>Contact Us - Jay Bhavani Medical</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Get in touch with Jay Bhavani Medical."/>
+<title>Contact Us - Jay Bhavani Medical</title>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<style>
+  body { font-family: Arial, sans-serif; margin:0; background:#f0f8ff; color:#333; transition: 0.3s; }
+  header { background:#1565c0; color:#fff; padding:20px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; }
+  header h1 a { color:#fff; text-decoration:none; font-size:1.8rem; font-weight:bold; }
+  nav ul { list-style:none; display:flex; gap:20px; padding:0; margin:0; }
+  nav ul li a { color:white; font-weight:500; }
+  nav ul li a:hover { color:#ffdd57; }
+  #theme-toggle { padding:6px 12px; border:none; border-radius:6px; cursor:pointer; font-weight:500; background:#ffdd57; color:#121212; }
+  #theme-toggle:hover { background:#ffc107; }
 
-  <!-- Font Awesome for social icons -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  .container { width:90%; max-width:700px; margin:auto; padding:20px; }
+  .contact { background:white; padding:30px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); margin-top:40px; }
+  .contact h2 { text-align:center; color:#1565c0; margin-bottom:20px; }
 
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f0f8ff;
-      color: #333;
-      margin: 0;
-    }
+  form label { display:block; margin-top:15px; font-weight:bold; color:#1565c0; }
+  form input, form textarea { width:100%; padding:10px; margin-top:5px; border-radius:5px; border:1px solid #ccc; font-size:16px; }
+  form button { margin-top:20px; background:#1976d2; color:white; padding:10px 20px; border:none; border-radius:5px; font-size:16px; cursor:pointer; }
+  form button:hover { background:#0d47a1; }
 
-    header {
-      background-color: #1565c0;
-      color: white;
-      padding: 20px 0;
-    }
+  .social { text-align:center; margin-top:30px; }
+  .social a { margin:0 10px; font-size:24px; color:#1565c0; transition:color 0.3s; }
+  .social a:hover { color:#0d47a1; }
 
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: auto;
-    }
+  .map { margin-top:40px; text-align:center; }
+  iframe { width:100%; height:300px; border:0; border-radius:10px; }
 
-    header h1 a {
-      color: white;
-      text-decoration: none;
-    }
+  footer { background:#1565c0; color:#fff; text-align:center; padding:15px; margin-top:50px; }
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 0;
-      margin: 10px 0;
-    }
-
-    nav ul li a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    .contact {
-      background: white;
-      margin: 40px auto;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      max-width: 700px;
-    }
-
-    .contact h2 {
-      text-align: center;
-      color: #1565c0;
-    }
-
-    form label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #1565c0;
-    }
-
-    form input,
-    form textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-
-    form button {
-      margin-top: 20px;
-      background-color: #1976d2;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    form button:hover {
-      background-color: #0d47a1;
-    }
-
-    .map {
-      margin-top: 40px;
-      text-align: center;
-    }
-
-    iframe {
-      border: 0;
-      width: 100%;
-      height: 300px;
-      border-radius: 10px;
-    }
-
-    .social {
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    .social a {
-      margin: 0 10px;
-      font-size: 24px;
-      color: #1565c0;
-      transition: color 0.3s ease;
-    }
-
-    .social a:hover {
-      color: #0d47a1;
-    }
-
-    footer {
-      background-color: #1565c0;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      margin-top: 50px;
-    }
-
-    @media screen and (max-width: 600px) {
-      nav ul {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .contact {
-        margin: 20px;
-        padding: 20px;
-      }
-    }
-  </style>
+  /* Dark Mode */
+  body.dark-mode { background:#121212; color:#f0f0f0; }
+  body.dark-mode .contact { background:#1f1f1f; color:#f0f0f0; box-shadow:0 4px 8px rgba(0,0,0,0.5); }
+  body.dark-mode input, body.dark-mode textarea { background:#2a2a2a; color:#f0f0f0; border:1px solid #555; }
+</style>
 </head>
-
 <body>
-  <header>
-    <div class="container">
-      <h1><a href="index.html">Jay Bhavani Medical</a></h1>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="order.html">Cart</a></li>
-          <!-- <li><a href="contact.html">Contact</a></li>
-          <li><a href="signup.html">Signup</a></li>
-          <li><a href="login.html">Login</a></li> -->
-          <li><a href="feedback.html">Feedback</a></li>
-        </ul>
-      </nav>
+<header>
+  <h1><a href="index.html">Jay Bhavani Medical</a></h1>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="order.html">Cart</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+  </nav>
+  <button id="theme-toggle">Dark Mode</button>
+</header>
+
+<div class="container">
+  <section class="contact">
+    <h2>Contact Us</h2>
+    <form id="contactform">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required/>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required/>
+
+      <label for="phone">Phone:</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" pattern="[0-9]{10}" required/>
+
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" placeholder="Write your message here..." rows="5" required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <div class="social">
+      <p>Follow us:</p>
+      <a href="#" title="Facebook"><i class="fab fa-facebook-square"></i></a>
+      <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
     </div>
-  </header>
 
-  <main>
-    <section class="contact container">
-      <h2>Contact Us</h2>
+    <div class="map">
+      <h3>Visit Our Store</h3>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.8350327153555!2d144.9537353153185!3d-37.81627974202013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577b55d1b2a7f63!2sJay%20Bhavani%20Medical!5e0!3m2!1sen!2sin!4v1599882383512!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </section>
+</div>
 
-      <form action="/submit-contact" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter your name" required/>
+<footer>
+  <p>© 2024 Jay Bhavani Medical. All rights reserved.</p>
+</footer>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required/>
+<script>
+  // Dark/Light mode toggle
+  const themeBtn = document.getElementById('theme-toggle');
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    themeBtn.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+  });
 
-        <label for="phone">Phone:</label>
-        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" pattern="[0-9]{10}" required/>
-
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" placeholder="Write your message here..." rows="5" required></textarea>
-
-        <button type="submit">Submit</button>
-      </form>
-
-      <div class="social">
-        <p>Follow us:</p>
-        <a href="#" title="Facebook"><i class="fab fa-facebook-square"></i></a>
-        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-        <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-      </div>
-
-      <div class="map">
-        <h3>Visit Our Store</h3>
-        <www
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.8350327153555!2d144.9537353153185!3d-37.81627974202013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577b55d1b2a7f63!2sJay%20Bhavani%20Medical!5e0!3m2!1sen!2sin!4v1599882383512!5m2!1sen!2sin"
-          allowfullscreen=""
-          loading="lazy">
-        </iframe>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2024 Jay Bhavani Medical. All rights reserved.</p>
-  </footer>
-
-  <script>
-    document.getElementById("contactform").addEventListener("submit", function (e) {
-      e.preventDefault();
-      alert("Thank you for contacting us! We'll get back to you soon.");
+  // Contact form submit
+  document.getElementById("contactform").addEventListener("submit", async function(e){
+    e.preventDefault();
+    const data = {
+      name: this.name.value,
+      email: this.email.value,
+      phone: this.phone.value,
+      message: this.message.value
+    };
+    try {
+      const res = await fetch('/submit-contact', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(data)
+      });
+      const result = await res.json();
+      alert(result.message || "Thank you for contacting us!");
       this.reset();
-    });
-  </script>
-
-  <script>
-document.getElementById("contactform").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  const data = {
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-    phone: document.getElementById("phone").value,
-    message: document.getElementById("message").value
-  };
-  try {
-    const res = await fetch('/submit-contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    const result = await res.json();
-    alert(result.message);
-    this.reset();
-  } catch {
-    alert("Error submitting contact");
-  }
-});
+    } catch {
+      alert("Error submitting contact form.");
+    }
+  });
 </script>
-
 </body>
 </html>

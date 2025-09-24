@@ -1,201 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Order - Jay Bhavani Medical</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .product-img { width: 80px; height: 80px; margin-right: 10px; object-fit: cover; }
-    .quantity-input { width: 50px; margin: 0 10px; }
-    .remove-btn { margin-left: 10px; }
-    li { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #ddd; }
-    .order-summary, .address-section, .payment-section { margin-top: 20px; }
-    .continue-shopping { margin-top: 20px; }
-    .cart-item-left { display: flex; align-items: center; gap: 10px; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Order - Jay Bhavani Medical</title>
+<style>
+  /* Global Styles */
+  * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f9fbff; color: #333; }
+  a { text-decoration: none; color: inherit; }
+
+  header { background: linear-gradient(to right, #1e3c72, #2a5298); color: #fff; padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; }
+  header h1 a { color: #fff; font-size: 1.8rem; font-weight: bold; }
+  nav ul { list-style: none; display: flex; gap: 20px; flex-wrap: wrap; }
+  nav ul li a { color: #fff; font-weight: 500; }
+  nav ul li a:hover { color: #ffdd57; }
+
+  .container { max-width: 1100px; margin: auto; padding: 20px; }
+
+  .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #ddd; flex-wrap: wrap; }
+  .cart-item-left { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+  .product-img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; }
+
+  .quantity-input { width: 50px; padding: 5px; border-radius: 4px; border: 1px solid #ccc; }
+  .remove-btn, #orderButton, #clearButton { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.3s ease; }
+  .remove-btn { background: #ff4d4d; color: #fff; }
+  .remove-btn:hover { background: #e60000; }
+
+  #orderButton { background: #2a5298; color: #fff; margin-top: 20px; }
+  #orderButton:hover { background: #1e3c72; }
+  #clearButton { background: #777; color: #fff; margin-top: 20px; margin-left: 10px; }
+  #clearButton:hover { background: #555; }
+
+  .order-summary, .address-section, .payment-section { margin-top: 25px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+  input[type="text"], select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; margin-top: 8px; }
+
+  .continue-shopping { margin-top: 20px; display: inline-block; color: #2a5298; font-weight: 500; }
+  .continue-shopping:hover { text-decoration: underline; }
+
+  footer { text-align: center; padding: 20px; background-color: #2a5298; color: #fff; border-radius: 8px; margin-top: 30px; }
+
+  /* Dark Mode */
+  body.dark-mode { background-color: #121212; color: #f0f0f0; }
+  body.dark-mode header { background: linear-gradient(to right, #0d1b2a, #1b263b); }
+  body.dark-mode nav ul li a { color: #ccc; }
+  body.dark-mode nav ul li a:hover { color: #ffcc00; }
+  body.dark-mode .order-summary, body.dark-mode .address-section, body.dark-mode .payment-section { background: #1f1f1f; box-shadow: 0 4px 8px rgba(0,0,0,0.5); color: #f0f0f0; }
+  body.dark-mode input[type="text"], body.dark-mode select { background: #2a2a2a; color: #f0f0f0; border: 1px solid #555; }
+
+  /* Theme Toggle */
+  #theme-toggle { padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; background-color: #ffdd57; color: #121212; font-weight: 500; }
+  #theme-toggle:hover { background-color: #ffc107; }
+
+  @media(max-width:768px){ .cart-item { flex-direction: column; align-items: flex-start; } }
+</style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1><a href="index.html">Jay Bhavani Medical</a></h1>
-      <nav>
-        <ul>
-          <li><a href="product.html">Medicines</a></li>
-          <li><a href="feedback.html">Feedback</a></li>
-        </ul>
-      </nav>
+<header>
+  <h1><a href="index.html">Jay Bhavani Medical</a></h1>
+  <nav>
+    <ul>
+      <li><a href="product.html">Medicines</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+  </nav>
+  <button id="theme-toggle">Dark Mode</button>
+</header>
+
+<div class="container">
+  <section class="cart" id="cartDisplay">
+    <h2>Your Cart</h2>
+    <ul id="cartItems"></ul>
+
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <p><strong>Total Items:</strong> <span id="totalItems">0</span></p>
+      <p><strong>Total Cost:</strong> ₹<span id="totalCost">0.00</span></p>
+      <p><strong>Delivery:</strong> Free delivery on orders over ₹200</p>
+      <p><strong>Estimated Delivery:</strong> 1-3 working days</p>
     </div>
-  </header>
 
-  <div class="container">
-    <section class="cart" id="cartDisplay">
-      <h2>Your Cart</h2>
-      <ul id="cartItems"></ul>
+    <div class="address-section">
+      <h3>Delivery Address</h3>
+      <input type="text" id="address" placeholder="Enter your delivery address" required>
+    </div>
 
-      <div class="order-summary">
-        <h3>Order Summary</h3>
-        <p><strong>Total Items:</strong> <span id="totalItems">0</span></p>
-        <p><strong>Total Cost:</strong> ₹<span id="totalCost">0.00</span></p>
-        <p><strong>Delivery:</strong> Free delivery on orders over ₹200</p>
-        <p><strong>Estimated Delivery:</strong> 1-3 working days</p>
-      </div>
+    <div class="payment-section">
+      <h3>Payment Method</h3>
+      <select id="paymentMethod">
+        <option>Cash on Delivery</option>
+        <option>UPI</option>
+        <option>Credit/Debit Card</option>
+      </select>
+    </div>
 
-      <div class="address-section">
-        <h3>Delivery Address</h3>
-        <label for="address">Delivery Address:</label>
-<input type="text" id="address" name="address" placeholder="Enter your delivery address" required>
-<style>
-  #address {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-</style>
-      </div>
+    <button id="orderButton" onclick="placeOrder()">Place Order</button>
+    <button id="clearButton" onclick="clearCart()">Clear Cart</button>
+    <div class="continue-shopping">
+      <a href="product.html">Continue Shopping</a>
+    </div>
+  </section>
+</div>
 
-      <div class="payment-section">
-        <h3>Payment Method</h3>
-        <label for="paymentMethod"> Select Payment Method</label>
-  <select id="paymentMethod" class="form-select" aria-label="Payment Method">
-          <option>Cash on Delivery</option>
-          <option>UPI</option>
-          <option>Credit/Debit Card</option>
-        </select>
-      </div>
+<footer>
+  <p>&copy; 2024 Jay Bhavani Medical. All rights reserved.</p>
+</footer>
 
-      <button id="orderButton" onclick="placeOrder()">Place Order</button>
-      <button id="clearButton" onclick="clearCart()">Clear Cart</button>
-      <div class="continue-shopping">
-        <a href="product.html">Continue Shopping</a>
-      </div>
-    </section>
-  </div>
-
-  <footer>
-    <p>&copy; 2024 Jay Bhavani Medical. All rights reserved.</p>
-  </footer>
-
-  <script>
-    function displayCart() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const cartItemsList = document.getElementById('cartItems');
-      let total = 0;
-      let totalItems = 0;
-      cartItemsList.innerHTML = '';
-
-      cart.forEach((item, index) => {
-        const listItem = document.createElement('li');
-
-        const left = document.createElement('div');
-        left.className = 'cart-item-left';
-
-        const img = document.createElement('img');
-        img.src = item.img|| 'images/default.jpg';;
-        img.className = 'product-img';
-
-        const name = document.createElement('span');
-        name.textContent = item.name;
-
-        left.appendChild(img);
-        left.appendChild(name);
-
-        const qtyInput = document.createElement('input');
-        qtyInput.type = 'number';
-        qtyInput.min = 1;
-        qtyInput.value = item.quantity;
-        qtyInput.className = 'quantity-input';
-        qtyInput.onchange = () => updateQuantity(index, qtyInput.value);
-
-        const price = document.createElement('span');
-        const itemTotal = item.price * item.quantity;
-        price.textContent = `₹${itemTotal.toFixed(2)}`;
-
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = 'Remove';
-        removeBtn.className = 'remove-btn';
-        removeBtn.onclick = () => removeFromCart(index);
-
-        const right = document.createElement('div');
-        right.appendChild(qtyInput);
-        right.appendChild(price);
-        right.appendChild(removeBtn);
-
-        listItem.appendChild(left);
-        listItem.appendChild(right);
-
-        cartItemsList.appendChild(listItem);
-        total += itemTotal;
-        totalItems += item.quantity;
-      });
-
-      document.getElementById('totalCost').textContent = total.toFixed(2);
-      document.getElementById('totalItems').textContent = totalItems;
-    }
-
-    function updateQuantity(index, qty) {
-      const cart = JSON.parse(localStorage.getItem('cart'));
-      cart[index].quantity = parseInt(qty);
-      localStorage.setItem('cart', JSON.stringify(cart));
-      displayCart();
-    }
-
-    function removeFromCart(index) {
-      const cart = JSON.parse(localStorage.getItem('cart'));
-      cart.splice(index, 1);
-      localStorage.setItem('cart', JSON.stringify(cart));
-      displayCart();
-    }
-
-    function clearCart() {
-      if (confirm('Clear entire cart?')) {
-        localStorage.removeItem('cart');
-        displayCart();
-      }
-    }
-
-   async function placeOrder() {
-  const cart = JSON.parse(localStorage.getItem('cart'));
-  const address = document.getElementById('address').value.trim();
-  const paymentMethod = document.getElementById('paymentMethod').value;
-
-  if (!cart || cart.length === 0) return alert('Your cart is empty.');
-  if (!address) return alert('Enter your delivery address.');
-
-  // 👇 Check login status
-  const userRes = await fetch('/me');
-  const user = await userRes.json();
-
-  if (!user) {
-    alert('Please login to place an order.');
-    return window.location.href = 'login.html';
-  }
-
-  // ✅ User is logged in, continue placing the order
-  fetch('/submit-order', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      cart,
-      address,
-      paymentMethod,
-      totalCost: document.getElementById('totalCost').textContent,
-      totalItems: document.getElementById('totalItems').textContent
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    alert(data.message);
-    localStorage.removeItem('cart');
-    window.location.href = 'feedback.html';
-  })
-  .catch(err => {
-    alert('Error placing order.');
-    console.error(err);
+<script>
+  const themeBtn = document.getElementById('theme-toggle');
+  themeBtn.addEventListener('click', ()=>{
+    document.body.classList.toggle('dark-mode');
+    themeBtn.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
   });
-}
 
-window.onload = displayCart;
-  </script>
+  function displayCart() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsList = document.getElementById('cartItems');
+    let total = 0, totalItems = 0;
+    cartItemsList.innerHTML = '';
+    if(cart.length===0){ cartItemsList.innerHTML="<p>Your cart is empty.</p>"; return; }
+
+    cart.forEach((item,index)=>{
+      const li = document.createElement('li');
+      li.className = 'cart-item';
+      const left = document.createElement('div');
+      left.className = 'cart-item-left';
+      const img = document.createElement('img'); img.src=item.img||'images/default.jpg'; img.className='product-img';
+      const name = document.createElement('span'); name.textContent = item.name;
+      left.append(img,name);
+
+      const qtyInput = document.createElement('input'); qtyInput.type='number'; qtyInput.min=1; qtyInput.value=item.quantity; qtyInput.className='quantity-input';
+      qtyInput.onchange=()=>updateQuantity(index,qtyInput.value);
+
+      const price = document.createElement('span'); price.textContent = `₹${(item.price*item.quantity).toFixed(2)}`;
+      const removeBtn = document.createElement('button'); removeBtn.textContent='Remove'; removeBtn.className='remove-btn'; removeBtn.onclick=()=>removeFromCart(index);
+
+      const right = document.createElement('div'); right.append(qtyInput,price,removeBtn);
+
+      li.append(left,right);
+      cartItemsList.appendChild(li);
+
+      total += item.price*item.quantity;
+      totalItems += item.quantity;
+    });
+
+    document.getElementById('totalCost').textContent = total.toFixed(2);
+    document.getElementById('totalItems').textContent = totalItems;
+  }
+
+  function updateQuantity(index,qty){ const cart=JSON.parse(localStorage.getItem('cart')); cart[index].quantity=parseInt(qty); localStorage.setItem('cart',JSON.stringify(cart)); displayCart(); }
+  function removeFromCart(index){ const cart=JSON.parse(localStorage.getItem('cart')); cart.splice(index,1); localStorage.setItem('cart',JSON.stringify(cart)); displayCart(); }
+  function clearCart(){ if(confirm('Clear entire cart?')){ localStorage.removeItem('cart'); displayCart(); } }
+
+  async function placeOrder(){
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    const address = document.getElementById('address').value.trim();
+    const paymentMethod = document.getElementById('paymentMethod').value;
+
+    if(!cart || cart.length===0) return alert('Your cart is empty.');
+    if(!address) return alert('Enter your delivery address.');
+
+    const userRes = await fetch('/me'); const user = await userRes.json();
+    if(!user){ alert('Please login to place an order.'); return window.location.href='login.html'; }
+
+    fetch('/submit-order',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({cart,address,paymentMethod,totalCost:document.getElementById('totalCost').textContent,totalItems:document.getElementById('totalItems').textContent})
+    }).then(res=>res.json())
+      .then(data=>{ alert(data.message); localStorage.removeItem('cart'); window.location.href='feedback.html'; })
+      .catch(err=>{ alert('Error placing order.'); console.error(err); });
+  }
+
+  window.onload = displayCart;
+</script>
 </body>
 </html>

@@ -1,4 +1,6 @@
 // server.js
+
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -8,23 +10,23 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 
 const app = express();
-const PORT = 3000;
 
-// --- MongoDB Connection ---
-mongoose.connect('mongodb://localhost:27017/medic', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => console.log('✅ Connected to MongoDB'));
 
-// --- Middleware ---
+console.log("MONGO_URI =", process.env.MONGO_URI); // ✅ debug check
+// MongoDB Atlas connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => console.log('✅ Connected to MongoDB'))
+  .catch(err => console.error("MongoDB connection error:", err));
+
+const PORT = process.env.PORT || 3000;
+// Session
 app.use(session({
-  secret: 'your-secret-key',
+  secret: process.env.SESSION_SECRET || 'change-this-to-a-strong-random-secret',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Required for local development over HTTP
+  cookie: { secure: false }
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -37,7 +39,10 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-});
+  banned: { type: Boolean, default: false },
+  isAdmin: { type: Boolean, default: false }
+}, { timestamps: true });
+
 
 const orderSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -80,17 +85,13 @@ app.get('/user.html', async (req, res) => {
   res.json(user);
 });
 
-app.get('/user/orders', async (req, res) => {
-  if (!req.session.userId) return res.status(401).json({ message: 'Not logged in' });
-  const orders = await Order.find({ userId: req.session.userId }).sort({ createdAt: -1 });
-  res.json(orders);
-});
-
 
 // --- Routes ---
 
-// Submit Order
 app.use(express.json());
+app.use(helmet()); // helps set security headers
+
+// Submit Order
 
 app.post('/submit-order', async (req, res) => {
   const { cart, address, paymentMethod, totalCost, totalItems } = req.body;
@@ -111,9 +112,7 @@ app.post('/submit-order', async (req, res) => {
   }
 });
 
-app.post('/logout', (req, res) => {
-  req.session.destroy(() => res.json({ message: 'Logged out' }));
-});
+
 
 app.post('/admin/add-product', async (req, res) => {
   try {
@@ -308,6 +307,41 @@ app.get('/api/products', async (req, res) => {
 });
 
 
+
+// Get all orders (for dashboard stats & charts)
+app.get('/api/orders', async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching orders' });
+  }
+});
+
+// Get all users (for dashboard stats)
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find().sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching users' });
+  }
+});
+
+// Get all feedbacks (for dashboard stats & avg rating)
+app.get('/api/feedbacks', async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find().sort({ _id: -1 });
+    res.json(feedbacks);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching feedbacks' });
+  }
+});
+
+
+
+
+
 // DELETE product by name
 app.post('/admin/delete-product', async (req, res) => {
   try {
@@ -418,6 +452,7 @@ app.post('/admin/delete-user', async (req, res) => {
 });
 
 
+
 // Optional route to seed products in MongoDB
 app.get('/insert-products', async (req, res) => {
   try {
@@ -426,13 +461,16 @@ app.get('/insert-products', async (req, res) => {
       { name: "Cough Syrup", price: 60, img: "images/syrup.jpg" },
       { name: "Vitamin C Tablets", price: 120, img: "images/vitamin-c.jpg" }
     ];
-    await Product.insertMany(products);
-    res.send('Sample products inserted successfully');
+    for (const p of products) {
+      await Product.updateOne({ name: p.name }, { $set: p }, { upsert: true });
+    }
+    res.send('Sample products inserted/updated successfully');
   } catch (error) {
     console.error('Error inserting products:', error);
     res.status(500).send('Error inserting products. Please try again later.');
   }
-})
+});
+
 // --- Global Error Handler ---
 app.use((err, req, res, next) => {
   console.error(err.stack);
