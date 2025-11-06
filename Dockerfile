@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-# run build if defined (will no-op if no build script)
+# run build if defined 
 RUN npm run build --if-present
 
 # Production stage
@@ -14,7 +14,7 @@ FROM node:20-alpine AS production
 WORKDIR /app
 ENV NODE_ENV=production
 
-# copy app (including any build artifacts) from build stage
+# copy app  from build stage
 COPY --from=build /app ./
 
 # remove builder node_modules and install only production deps
